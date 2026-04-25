@@ -10,9 +10,25 @@ class DashboardScreen extends StatelessWidget {
     final user = MyApp.loggedInUser ?? "User";
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Dashboard"),
-      ),
+    appBar: AppBar(
+    title: const Text("Dashboard"),
+    actions: [
+      IconButton(
+        icon: const Icon(Icons.logout),
+        onPressed: () {
+          // HAPUS DATA USER
+          MyApp.loggedInUser = null;
+
+          // KEMBALI KE LOGIN (hapus semua route)
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            '/',
+            (route) => false,
+          );
+        },
+      )
+    ],
+  ),
 
       body: Padding(
         padding: const EdgeInsets.all(16),
