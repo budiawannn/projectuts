@@ -8,18 +8,35 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  // key untuk validasi form
   final _formKey = GlobalKey<FormState>();
 
-  // controller input
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  void login() {
-    // cek validasi
-    if (_formKey.currentState!.validate()) {
-      // kalau valid → lanjut dashboard 
-      Navigator.pushNamed(context, '/dashboard');
+  bool isLoading = false;
+  bool isPasswordVisible = false;
+
+  void login() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() {
+      isLoading = true;
+    });
+
+    await Future.delayed(const Duration(seconds: 2));
+
+    // login dummy
+    if (emailController.text == "admin@test.com" &&
+        passwordController.text == "Admin123") {
+      Navigator.pushReplacementNamed(context, '/dashboard');
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Login gagal")),
+      );
     }
   }
 
@@ -30,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Form(
-            key: _formKey, 
+            key: _formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -65,35 +82,44 @@ class _LoginScreenState extends State<LoginScreen> {
                 // PASSWORD
                 TextFormField(
                   controller: passwordController,
-                  obscureText: true,
-                  decoration: const InputDecoration(
+                  obscureText: !isPasswordVisible,
+                  decoration: InputDecoration(
                     labelText: "Password",
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      icon: Icon(isPasswordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off),
+                      onPressed: () {
+                        setState(() {
+                          isPasswordVisible = !isPasswordVisible;
+                        });
+                      },
+                    ),
                   ),
                   validator: (value) {
-                  if (value == null || value.isEmpty) {
-                  return "Password tidak boleh kosong";
-                  }
-
-                  if (value.length < 8) {
-                    return "Minimal 8 karakter";
-                  }
-
-                  // HARUS ADA HURUF DAN ANGKA
-                  if (!RegExp(r'^(?=.*[A-Za-z])(?=.*\d)').hasMatch(value)) {
-                    return "Harus mengandung huruf dan angka";
-                  }
-
-                  return null;
-                },
+                    if (value == null || value.isEmpty) {
+                      return "Password tidak boleh kosong";
+                    }
+                    if (value.length < 8) {
+                      return "Minimal 8 karakter";
+                    }
+                    if (!RegExp(r'^(?=.*[A-Za-z])(?=.*\d)').hasMatch(value)) {
+                      return "Harus mengandung huruf dan angka";
+                    }
+                    return null;
+                  },
                 ),
 
                 const SizedBox(height: 20),
 
-                ElevatedButton(
-                  onPressed: login,
-                  child: const Text("Login"),
-                ),
+                // BUTTON LOGIN / LOADING
+                isLoading
+                    ? const CircularProgressIndicator()
+                    : ElevatedButton(
+                        onPressed: login,
+                        child: const Text("Login"),
+                      ),
 
                 TextButton(
                   onPressed: () {
