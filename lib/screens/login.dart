@@ -1,13 +1,26 @@
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  // key untuk validasi form
+  final _formKey = GlobalKey<FormState>();
+
+  // controller input
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  LoginScreen({super.key});
-
-  void login(BuildContext context) {
-    Navigator.pushNamed(context, '/dashboard');
+  void login() {
+    // cek validasi
+    if (_formKey.currentState!.validate()) {
+      // kalau valid → lanjut dashboard 
+      Navigator.pushNamed(context, '/dashboard');
+    }
   }
 
   @override
@@ -16,54 +29,80 @@ class LoginScreen extends StatelessWidget {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+          child: Form(
+            key: _formKey, 
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
 
-              // Judul
-              const Text(
-                "LOGIN",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-
-              const SizedBox(height: 20),
-
-              // INPUT EMAIL
-              TextField(
-                controller: emailController,
-                decoration: const InputDecoration(
-                  labelText: "Email",
-                  border: OutlineInputBorder(),
+                const Text(
+                  "LOGIN",
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
-              ),
 
-              const SizedBox(height: 10),
+                const SizedBox(height: 20),
 
-              // INPUT PASSWORD
-              TextField(
-                controller: passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: "Password",
-                  border: OutlineInputBorder(),
+                // EMAIL
+                TextFormField(
+                  controller: emailController,
+                  decoration: const InputDecoration(
+                    labelText: "Email",
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Email tidak boleh kosong";
+                    }
+                    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                      return "Email tidak valid";
+                    }
+                    return null;
+                  },
                 ),
-              ),
 
-              const SizedBox(height: 20),
+                const SizedBox(height: 10),
 
-              // BUTTON LOGIN
-              ElevatedButton(
-                onPressed: () => login(context),
-                child: const Text("Login"),
-              ),
+                // PASSWORD
+                TextFormField(
+                  controller: passwordController,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                    labelText: "Password",
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                  if (value == null || value.isEmpty) {
+                  return "Password tidak boleh kosong";
+                  }
 
-              TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/forgot');
+                  if (value.length < 8) {
+                    return "Minimal 8 karakter";
+                  }
+
+                  // HARUS ADA HURUF DAN ANGKA
+                  if (!RegExp(r'^(?=.*[A-Za-z])(?=.*\d)').hasMatch(value)) {
+                    return "Harus mengandung huruf dan angka";
+                  }
+
+                  return null;
                 },
-                child: const Text("Lupa Password?"),
-              ),
-            ],
+                ),
+
+                const SizedBox(height: 20),
+
+                ElevatedButton(
+                  onPressed: login,
+                  child: const Text("Login"),
+                ),
+
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/forgot');
+                  },
+                  child: const Text("Lupa Password?"),
+                ),
+              ],
+            ),
           ),
         ),
       ),
