@@ -8,10 +8,7 @@ class DashboardScreen extends StatelessWidget {
         title: Text("Dashboard"),
       ),
       body: Center(
-        child: Text(
-          "Dashboard Screen",
-          style: TextStyle(fontSize: 20),
-        ),
+        child: Text("Dashboard"),
       ),
     );
   }

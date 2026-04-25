@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
-import 'screens/login.dart';
-import 'screens/forgotpassword.dart';
-import 'screens/dashboard.dart';
+import 'package:projectuts/screens/dashboard.dart';
+import 'package:projectuts/screens/forgotpassword.dart';
+import 'package:projectuts/screens/login.dart';
+
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  static String? loggedInUser;
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+
+      // route sederhana
       initialRoute: '/',
+
       routes: {
         '/': (context) => LoginScreen(),
-        '/forgot': (context) => ForgotPasswordScreen(),
         '/dashboard': (context) => DashboardScreen(),
+        '/forgot': (context) => ForgotPasswordScreen(),
       },
     );
   }

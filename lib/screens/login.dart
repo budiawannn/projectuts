@@ -4,47 +4,67 @@ class LoginScreen extends StatelessWidget {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  LoginScreen({super.key});
+
   void login(BuildContext context) {
-    if (emailController.text == "admin@test.com" &&
-        passwordController.text == "Admin123") {
-      Navigator.pushNamed(context, '/dashboard');
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Login gagal")),
-      );
-    }
+    Navigator.pushNamed(context, '/dashboard');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Login")),
-      body: Padding(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
-            TextField(
-              controller: emailController,
-              decoration: InputDecoration(labelText: "Email"),
-            ),
-            SizedBox(height: 10),
-            TextField(
-              controller: passwordController,
-              decoration: InputDecoration(labelText: "Password"),
-              obscureText: true,
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => login(context),
-              child: Text("Login"),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/forgot');
-              },
-              child: Text("Lupa Password?"),
-            ),
-          ],
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+
+              // Judul
+              const Text(
+                "LOGIN",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+
+              const SizedBox(height: 20),
+
+              // INPUT EMAIL
+              TextField(
+                controller: emailController,
+                decoration: const InputDecoration(
+                  labelText: "Email",
+                  border: OutlineInputBorder(),
+                ),
+              ),
+
+              const SizedBox(height: 10),
+
+              // INPUT PASSWORD
+              TextField(
+                controller: passwordController,
+                obscureText: true,
+                decoration: const InputDecoration(
+                  labelText: "Password",
+                  border: OutlineInputBorder(),
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // BUTTON LOGIN
+              ElevatedButton(
+                onPressed: () => login(context),
+                child: const Text("Login"),
+              ),
+
+              TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/forgot');
+                },
+                child: const Text("Lupa Password?"),
+              ),
+            ],
+          ),
         ),
       ),
     );
