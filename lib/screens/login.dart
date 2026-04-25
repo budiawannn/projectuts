@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projectuts/main.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -28,6 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
     // login dummy
     if (emailController.text == "admin@test.com" &&
         passwordController.text == "Admin123") {
+      MyApp.loggedInUser = emailController.text;
       Navigator.pushReplacementNamed(context, '/dashboard');
     } else {
       setState(() {

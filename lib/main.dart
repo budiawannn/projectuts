@@ -9,6 +9,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  static String? loggedInUser;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
