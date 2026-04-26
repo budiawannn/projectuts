@@ -38,61 +38,84 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Lupa Password")),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+     body: Stack(
+  children: [
 
-              const Text(
-                "RESET PASSWORD",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    // BACKGROUND HIJAU
+    Container(
+      height: 250,
+      color: Colors.green,
+    ),
+
+    SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+
+            Card(
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
               ),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
 
-              const SizedBox(height: 20),
+                      const Text(
+                        "Reset Password",
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      ),
 
-              Form(
-                key: _formKey,
-                child: TextFormField(
-                  controller: emailController,
-                  decoration: const InputDecoration(
-                    labelText: "Email",
-                    border: OutlineInputBorder(),
+                      const SizedBox(height: 20),
+
+                      TextFormField(
+                        controller: emailController,
+                        decoration: const InputDecoration(
+                          labelText: "Email",
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Email tidak boleh kosong";
+                          }
+                          if (!value.contains("@")) {
+                            return "Email tidak valid";
+                          }
+                          return null;
+                        },
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      isLoading
+                          ? const CircularProgressIndicator()
+                          : ElevatedButton(
+                              onPressed: sendReset,
+                              child: const Text("Kirim Link Reset"),
+                            ),
+
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text("Kembali ke Login"),
+                      )
+                    ],
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Email tidak boleh kosong";
-                    }
-                    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                      return "Email tidak valid";
-                    }
-                    return null;
-                  },
                 ),
               ),
-
-              const SizedBox(height: 20),
-
-              isLoading
-                  ? const CircularProgressIndicator()
-                  : ElevatedButton(
-                      onPressed: sendReset,
-                      child: const Text("Kirim Link Reset"),
-                    ),
-
-              const SizedBox(height: 10),
-
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text("Kembali ke Login"),
-              ),
-            ],
-          ),
+            )
+          ],
         ),
       ),
+    )
+  ],
+),
+
     );
   }
 }

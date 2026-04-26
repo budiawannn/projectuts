@@ -6,40 +6,45 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ambil user dari global state
     final user = MyApp.loggedInUser ?? "User";
 
     return Scaffold(
-    appBar: AppBar(
-    title: const Text("Dashboard"),
-    actions: [
-      IconButton(
-        icon: const Icon(Icons.logout),
-        onPressed: () {
-          // HAPUS DATA USER
-          MyApp.loggedInUser = null;
+      appBar: AppBar(
+        title: const Text("Dashboard"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () {
+              MyApp.loggedInUser = null;
 
-          // KEMBALI KE LOGIN (hapus semua route)
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            '/',
-            (route) => false,
-          );
-        },
-      )
-    ],
-  ),
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/',
+                (route) => false,
+              );
+            },
+          )
+        ],
+      ),
 
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-
-            // WELCOME TEXT
-            Text(
-              "Selamat datang, $user",
-              style: const TextStyle(
-                  fontSize: 18, fontWeight: FontWeight.bold),
+            
+            // WELCOME
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.person),
+                const SizedBox(width: 8),
+                Text(
+                  "Selamat datang, $user",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
 
             const SizedBox(height: 20),
@@ -65,6 +70,19 @@ class DashboardScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: "Profile",
+          ),
+        ],
       ),
     );
   }
