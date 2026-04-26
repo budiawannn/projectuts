@@ -1,17 +1,31 @@
 # projectuts
 
-A new Flutter project.
+## Deskripsi
+Aplikasi mobile sederhana menggunakan Flutter yang terdiri dari 3 halaman:
+Login, Lupa Password, dan Dashboard.
 
-## Getting Started
+## Daftar Fitur
+- Login dengan validasi email & password
+- Show/hide password
+- Loading indicator saat login
+- Snackbar feedback (error & sukses)
+- Lupa Password dengan validasi email
+- Dashboard menampilkan data user
+- ListView dengan 10 item
+- Logout kembali ke halaman login
+  
+## Cara Menjalankan
+flutter pub get
+flutter run
 
-This project is a starting point for a Flutter application.
+## Screenshot Halaman
+![Login](assets/images/login.png)
 
-A few resources to get you started if this is your first Flutter project:
+![Dashboard](assets/images/dashboard.png)
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+![Forgot](assets/images/forgot.png)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Daftar Package
+- flutter
+- cupertino_icons 
+- flutter_lints 
